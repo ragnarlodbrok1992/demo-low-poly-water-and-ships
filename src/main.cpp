@@ -1,5 +1,4 @@
-#define WIN32_LEAN_AND_MEAN
-#include <Windows.h>
+#include "demo_low_poly_sailing.h"
 
 // Engine variables
 static const char* ClassName = "DemoLowPolySailing";
@@ -10,6 +9,9 @@ static bool MainLoop = true;
 
 // Key defines
 #define VK_Q 0x51
+
+// Test stuff for directx3d12 rendering system
+static Vertex vert = {};
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
   // Destroying application
@@ -36,6 +38,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 }
 
 int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
+  // Test stuff here
+  // Setting up logger
+  register_logger_file("logger.log");
+  // log("First main message.");
+  // log(vert);
+
   // Creating window class object
   WNDCLASSEX wc = {
     sizeof(WNDCLASSEX),

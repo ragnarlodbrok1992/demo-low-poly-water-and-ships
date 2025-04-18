@@ -29,6 +29,7 @@ echo Compiling...
   /DEBUG:FULL^
   /INCREMENT:NO^
   ../src/main.cpp^
+  ../src/logger.cpp^
   /I%DIRECTX_HEADERS_INCLUDE_DIR%^
   user32.lib gdi32.lib d3d12.lib dxgi.lib d3dcompiler.lib^
   /link /subsystem:windows /out:DemoLowPolySailing.exe

@@ -2,16 +2,14 @@
 #define _H_RENDER_DIRECTX3D12
 
 #include <DirectXMath.h>
+#include <cstdio>
 
 struct Vertex {
   DirectX::XMFLOAT3 position;
   DirectX::XMFLOAT4 color;
-
-  friend std::ostream& operator<<(std::ostream& os, const Vertex& vert) {
-    os << "Test debug vert stream stuff.";
-    return os;
-  }
 };
+
+const char* Vertex_to_string(const Vertex& vert);
 
 #endif /* _H_RENDER_DIRECTX3D12 */
 

@@ -37,12 +37,17 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
   return DefWindowProc(hWnd, message, wParam, lParam);
 }
 
+// Logger metadata
+const char* LOGGER_FILE_NAME = "logger.log";
+std::ofstream LOGGER_STREAM;
+
 int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
   // Test stuff here
   // Setting up logger
-  register_logger_file("logger.log");
-  // log("First main message.");
-  // log(vert);
+  Vertex test_vert = {};
+  register_logger_file(LOGGER_FILE_NAME, LOGGER_STREAM);
+  log("First main message.");
+  log(Vertex_to_string(test_vert));
 
   // Creating window class object
   WNDCLASSEX wc = {

@@ -30,6 +30,7 @@ echo Compiling...
   /INCREMENT:NO^
   ../src/main.cpp^
   ../src/logger.cpp^
+  ../src/render_directx3d12.cpp^
   /I%DIRECTX_HEADERS_INCLUDE_DIR%^
   user32.lib gdi32.lib d3d12.lib dxgi.lib d3dcompiler.lib^
   /link /subsystem:windows /out:DemoLowPolySailing.exe

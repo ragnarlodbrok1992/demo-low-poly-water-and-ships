@@ -8,7 +8,11 @@
 #define _WIN32_LEAN_AND_MEAN
 #include <Windows.h>
 
-void register_logger_file(const std::string& file_name);
+extern const char* LOGGER_FILE_NAME;
+extern std::ofstream LOGGER_STREAM;
+
+void register_logger_file(const std::string& file_name, std::ofstream& of_stream);
+void log(const char* msg);
 
 #endif /* _H_LOGGER */
 

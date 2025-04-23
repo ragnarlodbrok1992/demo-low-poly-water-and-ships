@@ -10,6 +10,7 @@
 
 #include "directx/d3dcommon.h"
 #include "directx/d3d12.h"
+#include "directx/d3dx12.h"
 
 // Vertex stuff
 struct Vertex {
@@ -19,8 +20,15 @@ struct Vertex {
 
 const char* Vertex_to_string(const Vertex& vert);
 
-// Render stuff
-
+// Renderer initialization functions
+void create_device(bool useWarpDevice, Microsoft::WRL::ComPtr<ID3D12Device>& device);
+void create_command_queue(
+    Microsoft::WRL::ComPtr<ID3D12Device>& device,
+    Microsoft::WRL::ComPtr<ID3D12CommandQueue>& commandQueue);
+void create_swap_chain();
+void create_window_association();
+void create_descriptor_heaps();
+void create_frame_resources();
 
 // Helper functions
 inline void ThrowIfFailed(HRESULT hr); 

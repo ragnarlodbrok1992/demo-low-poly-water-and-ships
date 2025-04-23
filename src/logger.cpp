@@ -22,6 +22,12 @@ void register_logger_file(const std::string& file_name, std::ofstream& of_stream
   }
 }
 
+void log(void* ptr) {
+  char buffer[32];
+  sprintf(buffer, "0x%p", static_cast<void*>(ptr));
+  log(buffer);
+}
+
 void log(const char* msg) {
   if (LOGGER_STREAM.is_open()) {
     std::cout.rdbuf(LOGGER_STREAM.rdbuf());

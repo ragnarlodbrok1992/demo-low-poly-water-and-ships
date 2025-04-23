@@ -7,8 +7,10 @@ const char* Vertex_to_string(const Vertex& vert) {
   return buffer;
 }
 
-void create_device(bool useWarpDevice, Microsoft::WRL::ComPtr<ID3D12Device>& device) {
-  Microsoft::WRL::ComPtr<IDXGIFactory4> factory;
+void create_device(
+    Microsoft::WRL::ComPtr<IDXGIFactory4>& factory,
+    Microsoft::WRL::ComPtr<ID3D12Device>& device,
+    bool useWarpDevice) {
   ThrowIfFailed(CreateDXGIFactory1(IID_PPV_ARGS(&factory)));
 
   if (useWarpDevice) {
@@ -33,6 +35,39 @@ void create_command_queue(
   queueDesc.Type                     = D3D12_COMMAND_LIST_TYPE_DIRECT;
 
   ThrowIfFailed(device->CreateCommandQueue(&queueDesc, IID_PPV_ARGS(&commandQueue)));
+}
+
+void create_swap_chain(
+    Microsoft::WRL::ComPtr<IDXGIFactory4>& factory,
+    Microsoft::WRL::ComPtr<ID3D12CommandQueue>& commandQueue,
+    Microsoft::WRL::ComPtr<IDXGISwapChain3>& r_swapChain,
+    const int m_width,
+    const int m_height,
+    const HWND hwnd,
+    UINT64 frame_index) {
+  DXGI_SWAP_CHAIN_DESC swapChainDesc = {};
+  swapChainDesc.BufferCount          = FRAME_COUNT;
+  swapChainDesc.BufferDesc.Width     = m_width;
+  swapChainDesc.BufferDesc.Height    = m_height;
+  swapChainDesc.BufferDesc.Format    = DXGI_FORMAT_R8G8B8A8_UNORM;
+  swapChainDesc.BufferUsage          = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+  swapChainDesc.SwapEffect           = DXGI_SWAP_EFFECT_FLIP_DISCARD;
+  swapChainDesc.OutputWindow         = hwnd;
+  swapChainDesc.SampleDesc.Count     = 1;
+  swapChainDesc.Windowed             = TRUE;
+
+  Microsoft::WRL::ComPtr<IDXGISwapChain> swapChain;
+  ThrowIfFailed(factory->CreateSwapChain(
+        commandQueue.Get(),
+        &swapChainDesc,
+        &swapChain
+    ));
+
+  ThrowIfFailed(swapChain.As(&r_swapChain));
+
+  // Initialization - setting up fullscreen
+  ThrowIfFailed(factory->MakeWindowAssociation(hwnd, DXGI_MWA_NO_ALT_ENTER));
+  frame_index = r_swapChain->GetCurrentBackBufferIndex();
 }
 
 inline void ThrowIfFailed(HRESULT hr) {

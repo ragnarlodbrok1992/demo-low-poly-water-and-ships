@@ -15,10 +15,14 @@ static bool MainLoop = true;
 // Renderer objects
 static bool renderer_useWarpDevice = false; // WARP - Windows Advanced Rasterization Platform - software renderer
 static UINT64 frame_index;
+static UINT rtv_descriptor_size;
 static Microsoft::WRL::ComPtr<IDXGIFactory4> renderer_factory;
 static Microsoft::WRL::ComPtr<ID3D12Device> renderer_device;                                            
+static Microsoft::WRL::ComPtr<ID3D12CommandAllocator> renderer_commandAllocator;
 static Microsoft::WRL::ComPtr<ID3D12CommandQueue> renderer_commandQueue;
+static Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> renderer_rtvHeap;
 static Microsoft::WRL::ComPtr<IDXGISwapChain3> renderer_swapChain;
+static Microsoft::WRL::ComPtr<ID3D12Resource> renderer_renderTargets[FRAME_COUNT];
 
 // Key defines
 #define VK_Q 0x51
@@ -111,6 +115,7 @@ int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
   create_device(renderer_factory, renderer_device, renderer_useWarpDevice);
   create_command_queue(renderer_device, renderer_commandQueue);
   create_swap_chain(renderer_factory, renderer_commandQueue, renderer_swapChain, WindowWidth, WindowHeight, hwnd, frame_index);
+  create_descriptor_heaps_frame_resource(renderer_device, renderer_rtvHeap, renderer_commandAllocator, renderer_swapChain, renderer_renderTargets, rtv_descriptor_size);
 
   // Main loop
   MSG msg = {};

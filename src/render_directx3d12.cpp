@@ -70,6 +70,35 @@ void create_swap_chain(
   frame_index = r_swapChain->GetCurrentBackBufferIndex();
 }
 
+void create_descriptor_heaps_frame_resource(
+    Microsoft::WRL::ComPtr<ID3D12Device>& device,
+    Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>& rtvHeap,
+    Microsoft::WRL::ComPtr<ID3D12CommandAllocator>& commandAllocator,
+    Microsoft::WRL::ComPtr<IDXGISwapChain3>& r_swapChain,
+    Microsoft::WRL::ComPtr<ID3D12Resource> renderTargets[FRAME_COUNT],
+    UINT& rtvDescriptorSize) {
+
+    D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc = {};
+    rtvHeapDesc.NumDescriptors             = FRAME_COUNT;
+    rtvHeapDesc.Type                       = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
+    rtvHeapDesc.Flags                      = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
+    ThrowIfFailed(device->CreateDescriptorHeap(&rtvHeapDesc, IID_PPV_ARGS(&rtvHeap)));
+
+    rtvDescriptorSize = device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
+
+  // Initialization - frame resources
+    CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(rtvHeap->GetCPUDescriptorHandleForHeapStart());   
+
+    // RTV for each frame
+    for (UINT n = 0; n < FRAME_COUNT; n++) {
+      ThrowIfFailed(r_swapChain->GetBuffer(n, IID_PPV_ARGS(&renderTargets[n])));
+      device->CreateRenderTargetView(renderTargets[n].Get(), nullptr, rtvHandle);
+      rtvHandle.Offset(1, rtvDescriptorSize);
+    }
+
+  ThrowIfFailed(device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&commandAllocator)));
+}
+
 inline void ThrowIfFailed(HRESULT hr) {
   if (FAILED(hr)) {
     throw std::runtime_error("Failed HRESULT");

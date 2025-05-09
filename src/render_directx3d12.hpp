@@ -4,6 +4,7 @@
 #define _WIN32_LEAN_AND_MEAN
 #include <Windows.h>
 #include <DirectXMath.h>
+#include <d3dcompiler.h>
 #include <cstdio>
 #include <stdexcept>
 
@@ -51,6 +52,12 @@ void create_descriptor_heaps_frame_resource(
 void create_empty_root_signature(
     Microsoft::WRL::ComPtr<ID3D12Device>& device,
     Microsoft::WRL::ComPtr<ID3D12RootSignature>& rootSignature
+    );
+void create_pipeline_state(
+    Microsoft::WRL::ComPtr<ID3D12Device>& device,
+    Microsoft::WRL::ComPtr<ID3D12RootSignature>& rootSignature,
+    Microsoft::WRL::ComPtr<ID3D12PipelineState>& pipelineState,
+    const char* shadersCode
     );
 
 // Helper functions

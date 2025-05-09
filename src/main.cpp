@@ -1,5 +1,6 @@
 #include "demo_low_poly_sailing.h"
 #include "render_directx3d12.hpp"
+#include "shaders_code.hpp"
 
 // Building defines
 #define DEBUG
@@ -56,7 +57,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 }
 
 // Logger metadata
-const char* LOGGER_FILE_NAME = "logger.log";
+const char* LOGGER_FILE_NAME = "application-log.log";
 std::ofstream LOGGER_STREAM;
 
 int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
@@ -66,6 +67,9 @@ int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
   register_logger_file(LOGGER_FILE_NAME, LOGGER_STREAM);
   log("First main message.");
   log(Vertex_to_string(test_vert));
+
+  log("[DEBUG] --> shaders_code");
+  log(shaders_code);
 
   // Creating window class object
   WNDCLASSEX wc = {

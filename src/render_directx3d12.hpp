@@ -48,7 +48,10 @@ void create_descriptor_heaps_frame_resource(
     Microsoft::WRL::ComPtr<ID3D12Resource> renderTargets[FRAME_COUNT], // Passing as pointer, since arrays get coerced to pointers, not by reference, possible source of bug... Also this really opens my eye to directx3d initialization procedure, pushing it down through functions might not be such a good idea...
     UINT& rtvDescriptorSize);
 // void create_frame_resources(); // Part of descriptor_heap
-void create_empty_root_signature_pipeline_state();
+void create_empty_root_signature(
+    Microsoft::WRL::ComPtr<ID3D12Device>& device,
+    Microsoft::WRL::ComPtr<ID3D12RootSignature>& rootSignature
+    );
 
 // Helper functions
 inline void ThrowIfFailed(HRESULT hr); 

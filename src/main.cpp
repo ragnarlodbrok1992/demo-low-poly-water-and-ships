@@ -23,6 +23,7 @@ static Microsoft::WRL::ComPtr<ID3D12CommandQueue> renderer_commandQueue;
 static Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> renderer_rtvHeap;
 static Microsoft::WRL::ComPtr<IDXGISwapChain3> renderer_swapChain;
 static Microsoft::WRL::ComPtr<ID3D12Resource> renderer_renderTargets[FRAME_COUNT];
+static Microsoft::WRL::ComPtr<ID3D12RootSignature> renderer_rootSignature;
 
 // Key defines
 #define VK_Q 0x51
@@ -116,6 +117,7 @@ int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
   create_command_queue(renderer_device, renderer_commandQueue);
   create_swap_chain(renderer_factory, renderer_commandQueue, renderer_swapChain, WindowWidth, WindowHeight, hwnd, frame_index);
   create_descriptor_heaps_frame_resource(renderer_device, renderer_rtvHeap, renderer_commandAllocator, renderer_swapChain, renderer_renderTargets, rtv_descriptor_size);
+  create_empty_root_signature(renderer_device, renderer_rootSignature);
 
   // Main loop
   MSG msg = {};

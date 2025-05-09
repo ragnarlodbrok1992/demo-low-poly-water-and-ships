@@ -99,6 +99,23 @@ void create_descriptor_heaps_frame_resource(
   ThrowIfFailed(device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&commandAllocator)));
 }
 
+void create_empty_root_signature(
+    Microsoft::WRL::ComPtr<ID3D12Device>& device,
+    Microsoft::WRL::ComPtr<ID3D12RootSignature>& rootSignature
+    ) {
+  CD3DX12_ROOT_SIGNATURE_DESC rootSignatureDesc;
+  rootSignatureDesc.Init(0, nullptr, 0, nullptr,
+      D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
+
+  Microsoft::WRL::ComPtr<ID3DBlob> signature;
+  Microsoft::WRL::ComPtr<ID3DBlob> error;
+  ThrowIfFailed(D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1, &signature, &error));
+  ThrowIfFailed(device->CreateRootSignature(0,
+        signature->GetBufferPointer(),
+        signature->GetBufferSize(),
+        IID_PPV_ARGS(&rootSignature)));
+}
+
 inline void ThrowIfFailed(HRESULT hr) {
   if (FAILED(hr)) {
     throw std::runtime_error("Failed HRESULT");

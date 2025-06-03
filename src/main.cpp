@@ -26,6 +26,7 @@ static Microsoft::WRL::ComPtr<IDXGISwapChain3> renderer_swapChain;
 static Microsoft::WRL::ComPtr<ID3D12Resource> renderer_renderTargets[FRAME_COUNT];
 static Microsoft::WRL::ComPtr<ID3D12RootSignature> renderer_rootSignature;
 static Microsoft::WRL::ComPtr<ID3D12PipelineState> renderer_pipelineState;
+static Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> renderer_commandList;
 
 // Key defines
 #define VK_Q 0x51
@@ -124,6 +125,7 @@ int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
   create_descriptor_heaps_frame_resource(renderer_device, renderer_rtvHeap, renderer_commandAllocator, renderer_swapChain, renderer_renderTargets, rtv_descriptor_size);
   create_empty_root_signature(renderer_device, renderer_rootSignature);
   create_pipeline_state(renderer_device, renderer_rootSignature, renderer_pipelineState, shaders_code);
+  create_command_list(renderer_device, renderer_commandAllocator, renderer_pipelineState, renderer_commandList);
 
   // Main loop
   MSG msg = {};

@@ -59,6 +59,12 @@ void create_pipeline_state(
     Microsoft::WRL::ComPtr<ID3D12PipelineState>& pipelineState,
     const char* shadersCode
     );
+void create_command_list(
+    Microsoft::WRL::ComPtr<ID3D12Device>& device,
+    Microsoft::WRL::ComPtr<ID3D12CommandAllocator>& commandAllocator,
+    Microsoft::WRL::ComPtr<ID3D12PipelineState>& pipelineState,
+    Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList>& commandList
+    );
 
 // Helper functions
 inline void ThrowIfFailed(HRESULT hr); 

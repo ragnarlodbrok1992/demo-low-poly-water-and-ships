@@ -226,3 +226,19 @@ void create_pipeline_state(
   }
 
 }
+
+void create_command_list(
+    Microsoft::WRL::ComPtr<ID3D12Device>& device,
+    Microsoft::WRL::ComPtr<ID3D12CommandAllocator>& commandAllocator,
+    Microsoft::WRL::ComPtr<ID3D12PipelineState>& pipelineState,
+    Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList>& commandList
+    ) {
+  // Create command list
+  ThrowIfFailed(device->CreateCommandList(0,
+        D3D12_COMMAND_LIST_TYPE_DIRECT,
+        commandAllocator.Get(),
+        pipelineState.Get(),
+        IID_PPV_ARGS(&commandList)));
+
+  ThrowIfFailed(commandList->Close());
+}
